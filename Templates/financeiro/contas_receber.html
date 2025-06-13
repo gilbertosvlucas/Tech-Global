@@ -9,7 +9,7 @@
     <h2>Contas a Receber</h2>
     <a href="{% url 'nova_conta_receber' %}" class="btn btn-success mb-3">Nova Fatura</a>
     <a href="{% url 'lista_clientes' %}" class="btn btn-secondary mb-3">Voltar</a>
-
+   
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -19,6 +19,7 @@
                 <th>Vencimento</th>
                 <th>Pagamento</th>
                 <th>Status</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +39,10 @@
                         <span class="badge bg-warning text-dark">Em aberto</span>
                     {% endif %}
                 </td>
+                <td>
+            <a href="{% url 'editar_conta_receber' conta.id %}" class="btn btn-sm btn-warning">Editar</a>
+            <a href="{% url 'excluir_conta_receber' conta.id %}" class="btn btn-sm btn-danger">Excluir</a>
+        </td>
             </tr>
             {% empty %}
             <tr><td colspan="6">Nenhuma fatura registrada.</td></tr>
