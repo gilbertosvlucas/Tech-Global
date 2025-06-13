@@ -7,6 +7,8 @@ class Cliente(models.Model):
         ('prospect', 'Prospect'),
     ]
 
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='prospect')
+
     nome = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
     telefone = models.CharField(max_length=20, blank=True)
@@ -49,4 +51,12 @@ class Interacao(models.Model):
 
     def __str__(self):
         return f"{self.cliente.nome} - {self.tipo}"
+
+STATUS_CHOICES = [
+    ('A', 'Ativo'),
+    ('I', 'Inativo'),
+    ('P', 'Potencial'),
+]
+
+status = models.CharField(max_length=1, choices=STATUS_CHOICES)
 

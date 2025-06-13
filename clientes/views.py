@@ -7,10 +7,21 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 @login_required
 def lista_clientes(request):
     clientes = Cliente.objects.all()
+
+    nome = request.GET.get('nome')
+    status = request.GET.get('status')
+
+    if nome:
+        clientes = clientes.filter(nome__icontains=nome)
+    if status in ['ativo','inativo','prospect']:
+        clientes = clientes.filter(status=status)
+
+    clientes = clientes.order_by('nome')  # ordenar por nome
     return render(request, 'clientes/lista.html', {'clientes': clientes})
 
 @login_required

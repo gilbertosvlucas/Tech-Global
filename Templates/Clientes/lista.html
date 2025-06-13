@@ -5,6 +5,23 @@
 <h2>Clientes</h2>
 <a href="{% url 'novo_cliente' %}" class="btn btn-success mb-3">Novo Cliente</a>
 
+<form method="get" class="row g-3 mb-3">
+    <div class="col-md-6">
+        <input type="text" name="nome" placeholder="Buscar por nome" value="{{ request.GET.nome }}" class="form-control">
+    </div>
+    <div class="col-md-4">
+        <select name="status" class="form-select">
+            <option value="">-- Todos os Status --</option>
+            <option value="ativo" {% if request.GET.status == 'ativo' %}selected{% endif %}>Ativo</option>
+            <option value="inativo" {% if request.GET.status == 'inativo' %}selected{% endif %}>Inativo</option>
+            <option value="prospect" {% if request.GET.status == 'prospect' %}selected{% endif %}>Prospect</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+    </div>
+</form>
+
 <table class="table table-striped">
     <thead>
         <tr>
