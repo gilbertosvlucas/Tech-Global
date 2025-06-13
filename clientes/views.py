@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from .models import Cliente
+from financeiro.models import ContaReceber
 from .forms import ClienteForm
 from .forms import ClienteForm, InteracaoForm
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 
 @login_required
@@ -66,6 +69,5 @@ def nova_interacao(request, cliente_id):
         'form': form,
         'cliente': cliente
     })
-
 
 

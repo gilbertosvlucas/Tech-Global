@@ -11,5 +11,4 @@ urlpatterns = [
     path('logout/', LogoutUsuario.as_view(), name='logout'),
     path('<int:cliente_id>/interacoes/', views.listar_interacoes, name='listar_interacoes'),
     path('<int:cliente_id>/interacoes/nova/', views.nova_interacao, name='nova_interacao'),
-
 ]
