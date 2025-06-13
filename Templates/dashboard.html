@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Resumo do Sistema</h2>
+
+<div class="row g-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">A Receber</h5>
+                <p class="card-text">R$ {{ total_receber|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">A Pagar</h5>
+                <p class="card-text">R$ {{ total_pagar|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Saldo</h5>
+                <p class="card-text">R$ {{ saldo|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-dark bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Clientes</h5>
+                <p class="card-text">{{ clientes_ativos }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="alert alert-danger">
+            <strong>{{ vencidas_hoje }}</strong> contas vencem hoje
+        </div>
+    </div>
+</div>
+
+<hr>
+<a href="{% url 'lista_clientes' %}" class="btn btn-outline-primary">Ver Clientes</a>
+<a href="{% url 'lista_contas_receber' %}" class="btn btn-outline-success">Contas a Receber</a>
+<a href="{% url 'lista_contas_pagar' %}" class="btn btn-outline-danger">Contas a Pagar</a>
+{% endblock %}
