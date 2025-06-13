@@ -5,11 +5,29 @@ from .models import ContaReceber
 from .forms import ContaReceberForm
 from .models import ContaPagar
 from .forms import ContaPagarForm
+from datetime import date
+from django.db.models import Q
 
 @login_required
 def lista_contas_receber(request):
-    contas = ContaReceber.objects.all().order_by('-data_vencimento')
-    return render(request, 'financeiro/contas_receber.html', {'contas': contas})
+    contas = ContaReceber.objects.select_related('cliente').all()
+
+    cliente_nome = request.GET.get('cliente', '')
+    status = request.GET.get('status', '')
+
+    if cliente_nome:
+        contas = contas.filter(cliente__nome__icontains=cliente_nome)
+
+    if status == 'pago':
+        contas = contas.filter(pago=True)
+    elif status == 'aberto':
+        contas = contas.filter(pago=False, data_vencimento__gte=date.today())
+    elif status == 'vencido':
+        contas = contas.filter(pago=False, data_vencimento__lt=date.today())
+
+    contas = contas.order_by('-data_vencimento')
+    return render(request, 'financeiro/contas_receber.html', {'contas': contas, 'today': date.today()})
+
 
 @login_required
 def nova_conta_receber(request):
