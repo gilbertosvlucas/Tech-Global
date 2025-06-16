@@ -1,40 +1,20 @@
-{% extends 'base.html' %}
-{% block content %}
-<h2>Lista de Orçamentos</h2>
+<tbody>
+    {% for orcamento in orcamentos %}
+    <tr>
+        <td>{{ orcamento.cliente.nome }}</td>
+        <td>{{ orcamento.get_status_display }}</td>
+        <td>{{ orcamento.data }}</td>
+        <td>R$ {{ orcamento.total|floatformat:2 }}</td>
+        <td>
+            <a href="{% url 'editar_orcamento' orcamento.id %}" class="btn btn-sm btn-warning">Editar</a>
+            <a href="{% url 'excluir_orcamento' orcamento.id %}" class="btn btn-sm btn-danger">Excluir</a>
 
-<a href="{% url 'novo_orcamento' %}" class="btn btn-primary mb-3">Novo Orçamento</a>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Cliente</th>
-            <th>Status</th>
-            <th>Data</th>
-            <th>Total</th>
-            <th>Ações</th>
-
-        </tr>
-
-    </thead>
-    <tbody>
-        {% for orcamento in orcamentos %}
-        <tr>
-            <td>{{ orcamento.cliente.nome }}</td>
-            <td>{{ orcamento.get_status_display }}</td>
-            <td>{{ orcamento.data }}</td>
-            <td>R$ {{ orcamento.total|floatformat:2 }}</td>
-            
-    <td>
-    <a href="{% url 'editar_orcamento' orcamento.id %}" class="btn btn-sm btn-warning">Editar</a>
-    <a href="{% url 'excluir_orcamento' orcamento.id %}" class="btn btn-sm btn-danger">Excluir</a>
-    </td>
-        </tr>
-
-        {% empty %}
-        <tr><td colspan="4">Nenhum orçamento cadastrado.</td></tr>
-   
-        {% endfor %}
-    </tbody>
-</table>
-
-{% endblock %}
+            {% if orcamento.status == 'aprovado' %}
+                <a href="{% url 'gerar_pedido' orcamento.id %}" class="btn btn-sm btn-success">Gerar Pedido</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">Nenhum orçamento cadastrado.</td></tr>
+    {% endfor %}
+</tbody>

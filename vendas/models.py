@@ -47,3 +47,34 @@ class ItemOrcamento(models.Model):
 
     def __str__(self):
         return f"{self.produto.nome} (x{self.quantidade})"
+
+class Pedido(models.Model):
+    STATUS_CHOICES = [
+        ('aberto', 'Aberto'),
+        ('entregue', 'Entregue'),
+        ('cancelado', 'Cancelado'),
+    ]
+
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    data_pedido = models.DateField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='aberto')
+    observacoes = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"Pedido #{self.id} - {self.cliente.nome}"
+
+    def total(self):
+        return sum(item.subtotal() for item in self.itens.all())
+
+
+class ItemPedido(models.Model):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='itens')
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    quantidade = models.PositiveIntegerField()
+    preco_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def subtotal(self):
+        return self.quantidade * self.preco_unitario
+
+    def __str__(self):
+        return f"{self.produto.nome} x{self.quantidade}"
