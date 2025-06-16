@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{% if editando %}Editar{% else %}Novo{% endif %} Orçamento</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <h4>Itens</h4>
+    {{ formset.management_form }}
+    {% for form in formset %}
+        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+            {{ form.as_p }}
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-success">Salvar Orçamento</button>
+    <a href="{% url 'lista_orcamentos' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
