@@ -7,6 +7,7 @@ from .models import ContaPagar
 from .forms import ContaPagarForm
 from datetime import date
 from django.db.models import Q
+from datetime import date
 
 @login_required
 def lista_contas_receber(request):
@@ -96,3 +97,25 @@ def excluir_conta_pagar(request, conta_id):
         return redirect('lista_contas_pagar')
     return render(request, 'financeiro/confirma_exclusao.html', {'conta': conta})
 
+@login_required
+def lista_contas_pagar(request):
+    contas = ContaPagar.objects.all()
+
+    fornecedor = request.GET.get('fornecedor', '')
+    status = request.GET.get('status', '')
+
+    if fornecedor:
+        contas = contas.filter(fornecedor__icontains=fornecedor)
+
+    if status == 'pago':
+        contas = contas.filter(pago=True)
+    elif status == 'aberto':
+        contas = contas.filter(pago=False, data_vencimento__gte=date.today())
+    elif status == 'vencido':
+        contas = contas.filter(pago=False, data_vencimento__lt=date.today())
+
+    contas = contas.order_by('-data_vencimento')
+    return render(request, 'financeiro/contas_pagar.html', {
+        'contas': contas,
+        'today': date.today()
+    })

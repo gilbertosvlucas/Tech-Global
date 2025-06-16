@@ -5,6 +5,24 @@
 <h2>Contas a Pagar</h2>
 <a href="{% url 'nova_conta_pagar' %}" class="btn btn-success mb-3">Nova Despesa</a>
 
+<form method="get" class="row g-3 mb-3">
+    <div class="col-md-5">
+        <input type="text" name="fornecedor" placeholder="Buscar por fornecedor" value="{{ request.GET.fornecedor }}" class="form-control">
+    </div>
+    <div class="col-md-4">
+        <select name="status" class="form-select">
+            <option value="">-- Todos os Status --</option>
+            <option value="pago" {% if request.GET.status == 'pago' %}selected{% endif %}>Pago</option>
+            <option value="vencido" {% if request.GET.status == 'vencido' %}selected{% endif %}>Vencido</option>
+            <option value="aberto" {% if request.GET.status == 'aberto' %}selected{% endif %}>Em Aberto</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+    </div>
+</form>
+
+
 <table class="table table-bordered">
     <thead>
         <tr>
